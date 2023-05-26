@@ -1,0 +1,6 @@
+.form-control::placeholder {
+    /* gris claro */
+    color: #999999;
+    /* opacidad 1 */
+
+}
