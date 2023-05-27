@@ -125,7 +125,27 @@ function jsonToForm(json, parent = null, root) {
 }
 
 window.onload = async () => {
-    fetch('bd.json')
-        .then(response => response.json())
-        .then(jsonToForm)
+    const user = 'pHachepe';
+    const repo = 'dockerBach';
+    const path = 'jsons';
+    const branch = 'master';
+    const url = `https://api.github.com/repos/${user}/${repo}/contents/${path}?ref=${branch}`;
+    // load all files json from jsons folder
+    const response = await fetch(url);
+    const jsons = await response.json();
+    const jsonPath = jsons.map((json) => json.path);
+
+    // jsonToForm a cada json
+    if (!jsonPath.length) console.error('No hay jsons en la carpeta jsons')
+    else {
+        jsonPath.forEach(async (path) => {
+            const response = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}`);
+            try {
+                const jsonForm = await response.json();
+                jsonToForm(jsonForm);
+            } catch (error) {
+                console.log(`El archivo ${path} no es un json valido`);
+            }
+        });
+    }
 }
