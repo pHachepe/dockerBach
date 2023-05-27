@@ -1,0 +1,14 @@
+{
+    "php": {
+        "image": {
+            "$select$": [
+                "php:latest",
+                "php:7.4-fpm",
+                "php:7.3-fpm"
+            ]
+        },
+        "volumes": [
+            "./code:/var/www/html"
+        ]
+    }
+}

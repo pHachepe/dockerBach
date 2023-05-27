@@ -1,0 +1,22 @@
+{
+    "postgres": {
+        "image": {
+            "$select$": [
+                "postgres:latest",
+                "postgres:10",
+                "postgres:9"
+            ]
+        },
+        "environment": {
+            "POSTGRES_PASSWORD": "rootpassword",
+            "POSTGRES_USER": "username",
+            "POSTGRES_DB": "dbname"
+        },
+        "ports": [
+            "5432:5432"
+        ],
+        "volumes": [
+            "./data:/var/lib/postgresql/data"
+        ]
+    }
+}
