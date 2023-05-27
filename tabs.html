@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tab Creator</title>
+  <link rel="stylesheet" href="bootstrap530/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+    #tabList {
+      min-height: 50px; /* Ajusta a lo que necesites */
+    }
+    #tabContent {
+      height: calc(100vh - 50px); /* Resta la altura del #tabList */
+      overflow: auto;
+    }
+    .column-content {
+      height: 100%;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+ 
+  <div class="container">
+    <h1>DockerBach</h1>
+    <div class="checkboxes">
+      <div class="form-check form-switch d-inline-block me-2">
+        <input class="form-check-input" type="checkbox" id="tab1" data-label="Pestaña 1">
+        <label class="form-check-label" for="tab1">Pestaña 1</label>
+      </div>
+      <div class="form-check form-switch d-inline-block me-2">
+        <input class="form-check-input" type="checkbox" id="tab2" data-label="Pestaña 2">
+        <label class="form-check-label" for="tab2">Pestaña 2</label>
+      </div>
+      <div class="form-check form-switch d-inline-block me-2">
+        <input class="form-check-input" type="checkbox" id="tab3" data-label="Pestaña 3">
+        <label class="form-check-label" for="tab3">Pestaña 3</label>
+      </div>
+      <!-- añade 5 check mas-->
+      <div class="form-check form-switch d-inline-block me-2">
+        <input class="form-check-input" type="checkbox" id="tab4" data-label="Pestaña 4">
+        <label class="form-check-label" for="tab4">Pestaña 4</label>
+      </div>
+      <div class="form-check form-switch d-inline-block me-2">
+        <input class="form-check-input" type="checkbox" id="tab5" data-label="Pestaña 5">
+        <label class="form-check-label" for="tab5">Pestaña 5</label>
+      </div>
+      <div class="form-check form-switch d-inline-block me-2">
+        <input class="form-check-input" type="checkbox" id="tab6" data-label="Pestaña 6">
+        <label class="form-check-label" for="tab6">Pestaña 6</label>
+      </div>
+      <div class="form-check form-switch d-inline-block me-2">
+        <input class="form-check-input" type="checkbox" id="tab7" data-label="Pestaña 7">
+        <label class="form-check-label" for="tab7">Pestaña 7</label>
+      </div>
+    </div>
+
+    <div class="tabs mt-4">
+      <ul class="nav nav-tabs" id="tabList"></ul>
+      <form>
+        <div class="tab-content" id="tabContent"></div>
+      </form>
+    </div>
+  </div>
+
+<script>
+  $('.checkboxes input[type="checkbox"]').change(function() {
+    var tabId = $(this).attr('id');
+    var tabLabel = $(this).data('label');
+
+    if ($(this).is(':checked')) {
+      // Si el checkbox está marcado, añade la pestaña y su contenido
+      $('#tabList').append('<li class="nav-item"><a class="nav-link" id="' + tabId + '-tab" data-toggle="tab" href="#' + tabId + '-content">' + tabLabel + '</a></li>');
+      $('#tabContent').append('<div class="tab-pane fade" id="' + tabId + '-content"><div class="row"><div class="col column-content">' + tabLabel + '</div><div class="col column-content">' + tabLabel + '</div></div></div>');
+      // select the last tab
+      $('#tabList a:last').tab('show');
+    } else {
+      const tabTmp = $('#' + tabId + '-tab');
+      // Si el checkbox está desmarcado, oculta la pestaña y su contenido
+      $('#' + tabId + '-tab').remove();
+      $('#' + tabId + '-content').remove();
+      // si se borra la pestaña activa, selecciona la última
+      if (tabTmp.hasClass('active')) {
+        // mostrar la última pestaña  
+        $('#tabList a:last').tab('show');
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
