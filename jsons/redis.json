@@ -1,0 +1,14 @@
+{
+    "redis": {
+        "image": {
+            "$select$": [
+                "redis:latest",
+                "redis:6.0",
+                "redis:5.0"
+            ]
+        },
+        "ports": [
+            "6379:6379"
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "wordpress": {
+        "image": {
+            "$select$": [
+                "wordpress:latest",
+                "wordpress:5",
+                "wordpress:4"
+            ]
+        },
+        "ports": [
+            "80:80"
+        ],
+        "environment": {
+            "WORDPRESS_DB_HOST": "mysql",
+            "WORDPRESS_DB_USER": "user",
+            "WORDPRESS_DB_PASSWORD": "password",
+            "WORDPRESS_DB_NAME": "wordpress"
+        },
+        "depends_on": [
+            "mysql"
+        ]
+    }
+}
