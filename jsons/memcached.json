@@ -1,0 +1,14 @@
+{
+    "memcached": {
+        "image": {
+            "$select$": [
+                "memcached:latest",
+                "memcached:1.6",
+                "memcached:1.5"
+            ]
+        },
+        "ports": [
+            "11211:11211"
+        ]
+    }
+}

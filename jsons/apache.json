@@ -1,0 +1,17 @@
+{
+    "apache": {
+        "image": {
+            "$select$": [
+                "httpd:latest",
+                "httpd:2.4",
+                "httpd:2.2"
+            ]
+        },
+        "ports": [
+            "80:80"
+        ],
+        "volumes": [
+            "./html:/usr/local/apache2/htdocs/"
+        ]
+    }
+}
