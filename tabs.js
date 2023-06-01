@@ -24,7 +24,7 @@ function createCheckbox(tabId, tabLabel) {
     document.querySelector('.checkboxes').appendChild(divHtml);
 }
 
-function createFieldset(key, idRoot) {
+function createFieldset(key, idRoot, tabId) {
     const colHtml = document.createElement('div');
     colHtml.className = idRoot || 'col-md-6';
     const fieldset = document.createElement('fieldset');
@@ -34,7 +34,8 @@ function createFieldset(key, idRoot) {
     legend.innerText = key;
     colHtml.appendChild(fieldset);
     fieldset.appendChild(legend);
-    idRoot ? document.getElementById(idRoot).appendChild(colHtml) : document.querySelector('form').appendChild(colHtml);
+    const pa = idRoot ? document.getElementById(idRoot) : document.getElementById(tabId);
+    pa.appendChild(colHtml);
 
     return fieldset;
 }
@@ -47,7 +48,7 @@ function createInput(el = { parent, key, value, root }) {
         parentHtml = document.getElementById(el.root + el.parent);
 
         if (!parentHtml) {
-            parentHtml = createFieldset(el.parent, el.root);
+            parentHtml = createFieldset(el.parent, el.root, null);
         }
 
         document.getElementById(el.root).appendChild(parentHtml);
@@ -117,11 +118,10 @@ const creates = {
 };
 
 function jsonToForm(json, parent = null, root, tabId) {
-    /*
     for (const [key, value] of Object.entries(json)) {
         if (parent === null) {
             root = key;
-            createFieldset(key, tabId);
+            createFieldset(key, null, tabId);
         }
         if (typeof value === 'object' && value !== null) {
             if (Array.isArray(value)) {
@@ -141,7 +141,6 @@ function jsonToForm(json, parent = null, root, tabId) {
             createInput({ parent, key, value, root });
         }
     }
-    */
 }
 
 window.onload = async () => {
@@ -159,7 +158,7 @@ window.onload = async () => {
     if (!jsonPath.length) console.error('No hay jsons en la carpeta jsons')
     else {
         // coger los 12 primeros
-        jsonPath.slice(0, 12).forEach(async (path) => {
+        jsonPath.slice(0, 3).forEach(async (path) => {
             const response = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}`);
             try {
                 const jsonForm = await response.json();
@@ -167,39 +166,58 @@ window.onload = async () => {
                 // Aquí es donde añades la nueva pestaña y su contenido
                 // el nombre del archivo es el tabId y el tabLabel pero sin la extensión ni la ruta
                 const tabId = path.split('/').pop().split('.')[0];
-                const tabLabel = tabId;
+
 
                 // Crea un nuevo checkbox
-                createCheckbox(tabId, tabLabel);
+                createCheckbox(tabId, tabId);
 
                 // Crea la pestaña y su contenido, pero ocúltalos por ahora
                 // $('#tabList').append('<li class="nav-item" id="' + tabId + '-tabItem" style="display: none;"><a class="nav-link" id="' + tabId + '-tab" data-bs-toggle="tab" href="#' + tabId + '-content">' + tabLabel + '</a></li>');
                 //$('#tabList').append('<li class="nav-item"><a class="nav-link" id="' + tabId + '-tab" data-toggle="tab" href="#' + tabId + '-content">' + tabLabel + '</a></li>'); 
-                $('#tabList').append('<li class="nav-item" id="' + tabId + '-tabItem" style="display: none;"><a class="nav-link" id="' + tabId + '-tab" data-toggle="tab" href="#' + tabId + '-content">' + tabLabel + '</a></li>');
-                $('#tabContent').append('<div class="tab-pane fade" id="' + tabId + '-content" style="display: none;">' + tabId + '</div>');
+                $('#tabList').append(`
+                <button class="nav-link"
+                id="nav-${tabId}-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-${tabId}-content"
+                type="button" role="tab"
+                aria-controls="nav-${tabId}-content" 
+                style="display: none;"
+                aria-selected="false"
+                >${tabId}</button>
+                `);
 
+                //<a class="nav-link" id="' + tabId + '-tab" data-toggle="tab" href="#' + tabId + '-content">' + tabLabel + '</a>
+                $('#nav-tabContent').append(`
+                <div class="tab-pane fade" id="nav-${tabId}-content" role="tabpanel" aria-labelledby="nav-${tabId}-tab" tabindex="0">${tabId}</div>
+                `);
                 // Llama a jsonToForm con el contenido de la pestaña
-                jsonToForm(jsonForm, null, null, tabId + '-content');
+                jsonToForm(jsonForm, null, "#nav" + tabId + "-content", "nav-" + tabId + "-content");
             } catch (error) {
                 console.log(`El archivo ${path} no es un json valido`);
             } finally {
                 $('.checkboxes input[type="checkbox"]').change(function () {
-                    //alert('hola' + this.id)
+                    // si se borran todos los checkbox, ocultar el contenido
+                    if (!$('.checkboxes input[type="checkbox"]').is(':checked')) {
+                        $('#nav-tabContent').hide();
+                    } else {
+                        $('#nav-tabContent').show();
+                    }
+
                     if ($(this).is(':checked')) {
                         // Si el checkbox está marcado, muestra la pestaña y su contenido
-                        $('#' + this.id + '-tabItem').show();
-                        $('#' + this.id + '-tab').tab('show');
+                        $('#nav-' + this.id + '-tab').show();
+                        //$('#nav-' + this.id + '-content').show();
+                        $('#nav-' + this.id + '-tab').tab('show');
                     } else {
                         // Si el checkbox está desmarcado, oculta la pestaña y su contenido
-                        $('#' + this.id + '-tabItem').hide();
-                        //$('#' + tabId + '-tab').tab('hide');
-                        //$('#' + tabId + '-content').hide();
+                        $('#nav-' + this.id + '-tab').hide();
+                        // $('#nav-' + this.id + '-content').hide();
                         // si se borra la pestaña activa, selecciona la última
-                        if ($('#' + this.id + '-tab').hasClass('active')) {
+                        if ($('#nav-' + this.id + '-tab').hasClass('active')) {
                             // mostrar la última pestaña visible
-                            $('.nav-tabs li:visible:last a').tab('show');
- 
+                            $('#tabList button:visible:last').tab('show');
                         }
+
                     }
                 });
             }
