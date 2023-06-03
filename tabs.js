@@ -6,18 +6,18 @@ function printForm() {
     console.log(Object.fromEntries(formData));
 }
 
-function createCheckbox(tabId, tabLabel) {
+function createCheckbox(tabId) {
     const divHtml = document.createElement('div');
     divHtml.className = 'col-3 form-check form-switch form-switch-lg d-inline-flex align-items-center';
     const inputHtml = document.createElement('input');
     inputHtml.className = 'col-6 form-check-input me-2';
     inputHtml.type = 'checkbox';
     inputHtml.id = tabId;
-    inputHtml.dataset.label = tabLabel;
+    inputHtml.dataset.label = tabId;
     const labelHtml = document.createElement('label');
     labelHtml.className = 'col-6 form-check-label';
     labelHtml.htmlFor = tabId;
-    labelHtml.textContent = tabLabel;
+    labelHtml.textContent = tabId;
     divHtml.appendChild(inputHtml);
     divHtml.appendChild(labelHtml);
 
@@ -29,7 +29,7 @@ function createFieldset(key, idRoot, tabId) {
     colHtml.className = idRoot || 'col-md-6';
     const fieldset = document.createElement('fieldset');
     fieldset.id = idRoot ? idRoot + key : key;
-    fieldset.className = idRoot || 'border p-2 mb-4 rounded border-secondary';
+    fieldset.className = idRoot || 'p-2 m-2 rounded';
     const legend = document.createElement('legend');
     legend.innerText = key;
     colHtml.appendChild(fieldset);
@@ -120,8 +120,8 @@ const creates = {
 function jsonToForm(json, parent = null, root, tabId) {
     for (const [key, value] of Object.entries(json)) {
         if (parent === null) {
-            root = key;
-            createFieldset(key, null, tabId);
+            root = key + ':';
+            createFieldset(root, null, tabId);
         }
         if (typeof value === 'object' && value !== null) {
             if (Array.isArray(value)) {
@@ -158,7 +158,7 @@ window.onload = async () => {
     if (!jsonPath.length) console.error('No hay jsons en la carpeta jsons')
     else {
         // coger los 12 primeros
-        jsonPath.slice(0, 3).forEach(async (path) => {
+        jsonPath.forEach(async (path) => {
             const response = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}`);
             try {
                 const jsonForm = await response.json();
@@ -169,7 +169,7 @@ window.onload = async () => {
 
 
                 // Crea un nuevo checkbox
-                createCheckbox(tabId, tabId);
+                createCheckbox(tabId);
 
                 // Crea la pestaña y su contenido, pero ocúltalos por ahora
                 // $('#tabList').append('<li class="nav-item" id="' + tabId + '-tabItem" style="display: none;"><a class="nav-link" id="' + tabId + '-tab" data-bs-toggle="tab" href="#' + tabId + '-content">' + tabLabel + '</a></li>');
@@ -187,8 +187,8 @@ window.onload = async () => {
                 `);
 
                 //<a class="nav-link" id="' + tabId + '-tab" data-toggle="tab" href="#' + tabId + '-content">' + tabLabel + '</a>
-                $('#nav-tabContent').append(`
-                <div class="tab-pane fade" id="nav-${tabId}-content" role="tabpanel" aria-labelledby="nav-${tabId}-tab" tabindex="0">${tabId}</div>
+                $('#tabContent').append(`
+                <div class="tab-pane fade" id="nav-${tabId}-content" role="tabpanel" aria-labelledby="nav-${tabId}-tab" tabindex="0"></div>
                 `);
                 // Llama a jsonToForm con el contenido de la pestaña
                 jsonToForm(jsonForm, null, "#nav" + tabId + "-content", "nav-" + tabId + "-content");
@@ -198,9 +198,9 @@ window.onload = async () => {
                 $('.checkboxes input[type="checkbox"]').change(function () {
                     // si se borran todos los checkbox, ocultar el contenido
                     if (!$('.checkboxes input[type="checkbox"]').is(':checked')) {
-                        $('#nav-tabContent').hide();
+                        $('#tabContent').hide();
                     } else {
-                        $('#nav-tabContent').show();
+                        $('#tabContent').show();
                     }
 
                     if ($(this).is(':checked')) {

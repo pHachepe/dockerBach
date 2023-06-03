@@ -5,6 +5,7 @@
 
 #tabContent {
   height: calc(100vh - 50px);
+  border-left: 1px solid #DEE2E6;
   /* Resta la altura del #tabList */
   overflow: auto;
 }
