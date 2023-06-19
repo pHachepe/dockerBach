@@ -1,7 +1,7 @@
 {
      "mysql": {
         "image": ["mysql:latest", "mysql:8.0", "mysql:5.7"],
-        "ports": ["3306:3306",],
+        "ports": ["3306:3306"],
         "volumes": ["/data:/var/lib/mysql","./pruebas"],
         "environment": {
             "MYSQL_ROOT_PASSWORD": "secret",
