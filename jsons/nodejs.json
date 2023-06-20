@@ -1,0 +1,12 @@
+{
+    "nodejs": {
+        "image": ["node:latest", "node:alpine", "node:slim", "node:20", "node:18"],
+        "working_dir": "/usr/src/app",
+        "command": "npm start",
+        "volumes": [".:/usr/src/app"],
+        "environment": {
+            "NODE_ENV": "development"
+        },
+        "ports": ["3000:3000"]
+    }
+}
