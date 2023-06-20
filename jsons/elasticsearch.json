@@ -1,3 +1,5 @@
-"elasticsearch": {
-    "image": ["elasticsearch:latest", "elasticsearch:8.8.0", "elasticsearch:7.17.9"]
+{
+    "elasticsearch": {
+        "image": ["elasticsearch:latest", "elasticsearch:8.8.0", "elasticsearch:7.17.9"]
+    }
 }
