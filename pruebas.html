@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Docker Compose Generator</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link href="bootstrap530/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bootstrap530/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="bootstrap530/js/bootstrap.min.js"></script>
+  <script src="jquery.min.js"></script>
+  <script src="pruebas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@3/dist/js-yaml.min.js"></script>
+  <link rel="stylesheet" href="tabs.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 class="text-center text-primary py-3">DockerBach</h1>
+    <div id="checkboxes" class="checkboxes row"></div>
+    <nav class="tabs mt-4">
+      <div class="d-flex ">
+
+        <div id="tabList" class="nav nav-tabs col-10"></div>
+        <div class="col-2" style="position: absolute; right: 0;">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button id="btnVer" class="btn btn-outline-primary">Ver <i class="bi bi-eye"></i></button>
+            <button id="btnDescargar" class="btn btn-outline-primary">Descargar <i class="bi bi-download"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <form id="docker-compose-form">
+        <div class="tab-content" id="tabContent"></div>
+      </form>
+    </nav>
+  </div>
+</body>
+
+</html>
