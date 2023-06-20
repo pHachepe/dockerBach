@@ -1,0 +1,12 @@
+{
+    "mongodb": {
+        "image": ["mongo:latest", "mongo:4.4", "mongo:4.2"],
+        "ports": ["27017:27017"],
+        "volumes": ["/data:/data/db"],
+        "environment": {
+            "MONGO_INITDB_ROOT_USERNAME": "username",
+            "MONGO_INITDB_ROOT_PASSWORD": "password",
+            "MONGO_INITDB_DATABASE": "dbname"
+        }
+    }
+}
