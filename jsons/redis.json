@@ -1,3 +1,5 @@
-"redis": {
-    "image": ["redis:latest", "redis:alpine"]
+{
+    "redis": {
+        "image": ["redis:latest", "redis:alpine", "redis:bookworm"]
+    }
 }
