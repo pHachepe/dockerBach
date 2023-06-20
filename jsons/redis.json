@@ -1,5 +1,6 @@
 {
     "redis": {
-        "image": ["redis:latest", "redis:alpine", "redis:bookworm"]
+        "image": ["redis:latest", "redis:alpine", "redis:bookworm"],
+        "ports": [123:123, 234:234]
     }
 }
