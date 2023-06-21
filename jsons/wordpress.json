@@ -4,10 +4,10 @@
         "depends_on": ["mysql"],
         "volumes": ["./target:/var/www/html"],
         "environment": {
-            "WORDPRESS_DB_USER": "manager",
-            "WORDPRESS_DB_PASSWORD": "secret",
-            "WORDPRESS_DB_HOST": "db",
-            "WORDPRESS_DB_NAME": "wordpress"
+            "WORDPRESS_DB_USER": "user",
+            "WORDPRESS_DB_PASSWORD": "pass",
+            "WORDPRESS_DB_HOST": "mysql",
+            "WORDPRESS_DB_NAME": "db"
         },
         "ports": ["8080:80"]
     }
