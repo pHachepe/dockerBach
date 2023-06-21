@@ -4,9 +4,9 @@
         "working_dir": "/application",
         "volumes": [".:/application"],
         "environment": {
-            "POSTGRES_USER": "rootuser",
-            "POSTGRES_PASSWORD": "rootpassword",
-            "POSTGRES_DB": "databasename"
+            "POSTGRES_USER": "user",
+            "POSTGRES_PASSWORD": "pass",
+            "POSTGRES_DB": "db"
         },
         "ports": ["56004:5432"]
     }
