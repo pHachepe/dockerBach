@@ -1,23 +1,70 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
-    <title>DockerBach</title>
-    <meta charset="utf-8">
-    <link href="bootstrap.min.css" rel="stylesheet">
-    <link href="index.css" rel="stylesheet">
-    <script src="index.js"></script>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <title>Docker Compose Generator</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  
+  <!-- BootStrap -->
+  <link href="bootstrap530/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bootstrap530/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="bootstrap530/js/bootstrap.min.js"></script>
+
+  <!-- JQuery -->
+  <script src="js/jquery.min.js"></script>
+
+  <!-- JS-YAML -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@3/dist/js-yaml.min.js"></script>
+
+  <!-- Custom -->
+  <link rel="stylesheet" href="index.css">
+  <script src="js/main.js"></script>
+  <script src="js/createForm.js"></script>
+  <script src="js/casts.js"></script>
+  
 </head>
 
 <body>
-    <main class="container mt-3 mb-3">
-        <section class="text-center">
-            <h1>Docker Bach</h1>
-            <form id="DockerBach" class="row"></form>
-            <button type="button" class="col-md-3 btn btn-primary" onclick="printForm()">Imprimir</button>
-        </section>
-    </main>
 
+  <div class="container">
+    <h1 class="text-center text-primary py-3">DockerBach</h1>
+    <div id="checkboxes" class="checkboxes row"></div>
+    <nav class="tabs mt-4">
+      <div class="d-flex ">
+
+        <div id="tabList" class="nav nav-tabs col-10"></div>
+        <div class="col-2" style="position: absolute; right: 0;">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button id="btnVer" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#yamlModal" onclick="showYaml()">Ver <i class="bi bi-eye"></i></button>
+            <button id="btnDescargar" class="btn btn-outline-primary">Descargar <i class="bi bi-download"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <form id="docker-compose-form">
+        <div class="tab-content" id="tabContent"></div>
+      </form>
+    </nav>
+    
+    <div class="modal fade" id="yamlModal" tabindex="-1" aria-labelledby="yamlModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="yamlModalLabel">Docker Compose - YAML</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Aquí va el texto que quieres mostrar.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
 </body>
 
 </html>
