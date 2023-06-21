@@ -1,10 +1,10 @@
 {
     "apache": {
         "image": ["httpd:latest", "httpd:2.4", "httpd:2.2"],
-        "working_dir": "/usr/local/apache2/htdocs",
+        "working_dir": "/var/www/html",
         "volumes": [
             "./html:/usr/local/apache2/htdocs",
-            "./my-httpd.conf:/usr/local/apache2/conf/httpd.conf"
+            "./httpd.conf:/usr/local/apache2/conf/httpd.conf"
         ],
         "ports": ["8080:80"]
     }
