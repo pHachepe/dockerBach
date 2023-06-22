@@ -1,14 +1,8 @@
 {
     "php": {
-        "image": {
-            "$select$": [
-                "php:latest",
-                "php:7.4-fpm",
-                "php:7.3-fpm"
-            ]
-        },
-        "volumes": [
-            "./code:/var/www/html"
-        ]
+        "image": ["php:latest", "php:8.0-fpm", "php:7.4-fpm"],
+        "working_dir": "/var/www/html",
+        "volumes": [".code:/var/www/html"],
+        "environment": { }
     }
 }

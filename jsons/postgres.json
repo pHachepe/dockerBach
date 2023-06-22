@@ -1,0 +1,13 @@
+{
+    "postgres": {
+        "image": ["postgres:latest", "postgres:15-alpine", "postgres:14", "postgres:13"],
+        "working_dir": "/application",
+        "volumes": [".:/application"],
+        "environment": {
+            "POSTGRES_USER": "user",
+            "POSTGRES_PASSWORD": "pass",
+            "POSTGRES_DB": "db"
+        },
+        "ports": ["56004:5432"]
+    }
+}

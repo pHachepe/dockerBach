@@ -1,21 +1,11 @@
 {
     "nginx": {
-        "image": {
-            "$select$": [
-                "nginx:latest",
-                "nginx:alpine"
-            ]
-        },
-        "ports": [
-            "80:80",
-            "443:443"
-        ],
+        "image": ["nginx:latest", "nginx:alpine", "nginx:stable-alpine", "nginx:mainline-alpine"],
+        "working_dir": "/application",
         "volumes": [
-            "./html:/usr/share/nginx/html"
+            ".:/application",
+            "./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
         ],
-        "depends_on": [
-            "php",
-            "mysql"
-        ]
+        "ports": ["56000:80"]
     }
 }

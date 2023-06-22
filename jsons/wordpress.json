@@ -1,23 +1,14 @@
 {
     "wordpress": {
-        "image": {
-            "$select$": [
-                "wordpress:latest",
-                "wordpress:5",
-                "wordpress:4"
-            ]
-        },
-        "ports": [
-            "80:80"
-        ],
+        "image": ["wordpress:latest", "wordpress:5", "wordpress:4"],
+        "depends_on": ["mysql"],
+        "volumes": ["./target:/var/www/html"],
         "environment": {
-            "WORDPRESS_DB_HOST": "mysql",
             "WORDPRESS_DB_USER": "user",
-            "WORDPRESS_DB_PASSWORD": "password",
-            "WORDPRESS_DB_NAME": "wordpress"
+            "WORDPRESS_DB_PASSWORD": "pass",
+            "WORDPRESS_DB_HOST": "mysql",
+            "WORDPRESS_DB_NAME": "db"
         },
-        "depends_on": [
-            "mysql"
-        ]
+        "ports": ["8080:80"]
     }
 }
