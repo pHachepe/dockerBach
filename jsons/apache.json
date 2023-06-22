@@ -3,7 +3,7 @@
         "image": ["httpd:latest", "httpd:2.4", "httpd:2.2"],
         "working_dir": "/usr/local/apache2/htdocs",
         "volumes": [
-            "./htdocs:/usr/local/apache2/htdocs"
+            "./htdocs:/usr/local/apache2/htdocs", "prueba"
         ],
         "ports": ["8080:80"]
     }
