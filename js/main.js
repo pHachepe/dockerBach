@@ -8,7 +8,7 @@ const fetchJsonFromGithub = async (user, repo, path, branch) => {
 
 const fetchAndParseJson = async (user, repo, branch, path) => {
     let timestamp = Date.now();
-    const response = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}?${timestamp}`); //,{ headers: { 'Cache-Control': 'no-cache' } }
+    const response = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}?${timestamp}`, { headers: { 'Cache-Control': 'no-cache' } });
     return response.json();
 }
 
