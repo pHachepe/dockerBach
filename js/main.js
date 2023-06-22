@@ -57,8 +57,8 @@ const createTabs = (jsonPaths, user, repo, branch) => {
                 `);
 
                     $('#tabContent').append(`
-                <div class="tab-pane fade" id="nav-${tabId}-content" role="tabpanel" aria-labelledby="nav-${tabId}-tab" tabindex="0"></div>
-                `);
+                        <div class="tab-pane fade" id="nav-${tabId}-content" role="tabpanel" aria-labelledby="nav-${tabId}-tab" tabindex="0"></div>
+                    `);
 
                     const tabContent = jsonToForm(jsonForm);
                     document.getElementById(`nav-${tabId}-content`).appendChild(tabContent);
