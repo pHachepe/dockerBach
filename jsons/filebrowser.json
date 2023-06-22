@@ -1,0 +1,21 @@
+{
+    "filebrowser": {
+      "image": [
+        "hurlenko/filebrowser:latest",
+        "hurlenko/filebrowser:v2.23.0",
+        "hurlenko/filebrowser:v2.22.0",
+        "hurlenko/filebrowser:v2.21.0"
+      ],
+      "ports": [
+        "8081:8080"
+      ],
+      "volumes": [
+        "/DATA_DIR:/data",
+        "/CONFIG_DIR:/config"
+      ],
+      "environment": {
+        "FB_BASEURL": "/fb"
+      },
+      "restart": "always"
+    }
+  }
