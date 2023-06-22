@@ -37,7 +37,6 @@ const createTabs = (jsonPaths, user, repo, branch) => {
     if (!jsonPaths.length) console.error('No hay jsons en la carpeta jsons')
     else {
         jsonPaths = jsonPaths
-            //.filter(path => path.includes('mysql') || path.includes('wordpress')).slice(0,3)
             .forEach(async (path) => {
                 try {
                     const jsonForm = await fetchAndParseJson(user, repo, branch, path);
@@ -70,6 +69,57 @@ const createTabs = (jsonPaths, user, repo, branch) => {
                 }
             });
     }
+}
+
+const createYaml = () => {
+    const dockerComposeObject = { version: '3.9', services: formToObject() };
+    const dockerComposeYaml = jsyaml.dump(dockerComposeObject);
+    return dockerComposeYaml;
+}
+
+const showYaml = () => {
+    const dockerComposeYaml = createYaml();
+    const bodyModal = document.querySelector('.modal-body');
+    bodyModal.innerHTML = `<pre>${dockerComposeYaml}</pre>`;
+}
+
+const downloadYaml = () => {
+    const dockerComposeYaml = createYaml();
+
+    const blob = new Blob([dockerComposeYaml], { type: "text/yaml;charset=utf-8" });
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = 'docker-compose.yaml';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+const copyYaml = () => {
+    const dockerComposeYaml = createYaml();
+    navigator.clipboard.writeText(dockerComposeYaml);
+    showAlert('Copiado al portapapeles!');
+}
+
+const showAlert = (message) => {
+        // mensaje de copiado que se desvanece poco a poco en total tarda 2 segundos
+        let notification = document.getElementById('notification');
+        // Mostramos la notificación
+        notification.style.display = 'block';
+        notification.style.opacity = 1;
+        notification.innerHTML = message;
+    
+        // Esperamos 2 segundos antes de comenzar a desvanecer
+        setTimeout(() => {
+            // Cambiamos la opacidad a 0 para que comience a desvanecerse
+            notification.style.opacity = 0;
+        }, 2000);
+    
+        // Esperamos 4 segundos en total antes de ocultar completamente la notificación
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 4000);
 }
 
 window.onload = async () => {

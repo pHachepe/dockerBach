@@ -3,10 +3,17 @@ const createElement = ({ elementType, id, className, text, htmlFor, type }) => {
     if (id) element.id = id;
     if (className) element.className = className;
     if (text) element.innerText = text;
-    if (htmlFor) element.htmlFor = htmlFor; 
+    if (htmlFor) element.htmlFor = htmlFor;
     if (type) element.type = type;
     return element;
 }
+
+const createInputGroup = ({ service, config, container }) => {
+    const inputGroup = document.createElement('div');
+    inputGroup.className = 'input-group my-2';
+    inputGroup.id = `${service}-${config}-pair-${container.children.length}`;
+    return inputGroup;
+};
 
 const createInput = (name, value) => {
     const input = document.createElement('input');
@@ -17,17 +24,16 @@ const createInput = (name, value) => {
 };
 
 const createInputPair = (service, config, container, local = '', remote = '') => {
-    const inputGroup = document.createElement('div');
-    inputGroup.className = 'input-group my-2';
-    inputGroup.id = `${service}-${config}-pair-${container.children.length}`;
+    const inputGroup = createInputGroup({ service, config, container, type: 'pair' });
     const localInput = createInput(`${service}-${config}-local`, local);
     const remoteInput = createInput(`${service}-${config}-remote`, remote);
     localInput.setAttribute('data-pair', `${service}-${config}-remote`);
     remoteInput.setAttribute('data-pair', `${service}-${config}-local`);
 
-    const removeButton = createButton({ text: 'Eliminar', className: 'btn btn-danger', onClickHandler: () => {
-        const parent = document.getElementById(inputGroup.id);
-        parent.remove();
+    const removeButton = createButton({
+        text: 'Eliminar', className: 'btn btn-danger', onClickHandler: () => {
+            const parent = document.getElementById(inputGroup.id);
+            parent.remove();
         }
     });
 

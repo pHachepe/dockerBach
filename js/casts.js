@@ -9,15 +9,12 @@ const jsonToForm = (services) => {
             }
 
             // create label for input block
-            const label = createLabel(`${service} ${config}: `);
-            if (config === 'image') {
-                const select = createSelect(`${service}-image`, services[service][config]);
-                serviceContainer.appendChild(label);
-                serviceContainer.appendChild(select);
-            } else if (config === 'ports' || config === 'volumes') {
-                const inputContainer = document.createElement('div');
-                inputContainer.id = `${service}-${config}`;
-
+            const label = createLabel(`${config}:`);
+            const inputContainer = document.createElement('div');
+            inputContainer.id = `${service}-${config}`;
+            inputContainer.className = 'input-container ';
+            
+            if (config === 'ports' || config === 'volumes') {
                 serviceContainer.appendChild(label);
                 serviceContainer.appendChild(inputContainer);
 
@@ -29,9 +26,6 @@ const jsonToForm = (services) => {
                 const addButton = createButton({ text: `Agregar ${config}`, onClickHandler: () => createInputPair(service, config, inputContainer) });
                 serviceContainer.appendChild(addButton);
             } else if (config === 'environment') {
-                const inputContainer = document.createElement('div');
-                inputContainer.id = `${service}-${config}`;
-
                 serviceContainer.appendChild(label);
                 serviceContainer.appendChild(inputContainer);
 
@@ -43,10 +37,19 @@ const jsonToForm = (services) => {
                 const addButton = createButton({ text: `Agregar ${config}`, onClickHandler: () => createInputPair(service, config, inputContainer) });
                 serviceContainer.appendChild(addButton);
             } else {
-                const input = createInput(`${service}-${config}`);
+                inputContainer.dataset.type = 'simple';
+                let input;
+                // if config is image, create select with options
+                if (config === 'image') {
+                    input = createSelect(`${service}-image`, services[service][config]);
+                } else {
+                    input = createInput(`${service}-${config}`, services[service][config]);
+                }
+
                 input.placeholder = `${service} ${config}`;
-                serviceContainer.appendChild(label);
-                serviceContainer.appendChild(input);
+                inputContainer.appendChild(label);
+                inputContainer.appendChild(input);
+                serviceContainer.appendChild(inputContainer);
             }
         }
     }
@@ -54,92 +57,71 @@ const jsonToForm = (services) => {
     return serviceContainer;
 };
 
-const formToObject = (form) => {
+const formToObject = () => {
     let switchs = Array.from(document.querySelectorAll('.checkboxes input[type="checkbox"]:checked'));
     let idsSwitchsSelected = switchs.map(checkbox => checkbox.id);
-    
-    idsSwitchsSelected.forEach(id => {
-        const service = id;
-        const navcontent = document.getElementById(`nav-${service}-content`);
-        const inputs = Array.from(navcontent.querySelectorAll('input, select'));
-        inputs.forEach(input => {
-            const keys = input.name.split('-');
-            const service = keys[0];
-            const config = keys[1];
-            const index = keys[3];
-            const value = input.value;
-        });
-    });
-    
 
     const obj = {};
-    const formData = new FormData(form);
+    idsSwitchsSelected.forEach(id => {
+        const service = id;
+        // objeto con la informacion de los inputs
+        const results = [];
 
-    // filtrar solo los formularios seleccionados en idsSwitchsSelected
-   // for (const [key, value] of formData.entries()) {
-  //      const keys = key.split('-');
+        const navcontent = document.getElementById(`nav-${service}-content`);
+        const inputContainers = Array.from(navcontent.querySelectorAll('.input-container'));
 
+        inputContainers.forEach(inputContainer => {
 
-    for (const [key, value] of formData.entries()) {
-        const keys = key.split('-');
-        const service = keys[0];
-        const config = keys[1];
+            if (inputContainer.dataset.type === 'simple') {
+                const input = inputContainer.querySelector('select, input');
+                const keys = input.name.split('-');
+                // add to results new object with the input value and the input name
+                const result = {};
+                result.config = keys[1];
+                result.value = input.value;
+                results.push(result);
+            } else {
+                // Si no es simple, es un inputGroup con dos inputs
+                const inputGroups = Array.from(inputContainer.querySelectorAll('.input-group'));
 
-        if (!obj[service]) {
-            obj[service] = {};
-        }
+                // recorrer los inputGroups
+                inputGroups.forEach(inputGroup => {
+                    const inputs = Array.from(inputGroup.querySelectorAll('input'));
+                    const keys = inputs[0].name.split('-');
+                    // add to results new object with the input value and the input name
+                    const result = {};
+                    result.config = keys[1];
 
-        if (config === 'image') {
-            obj[service][config] = value;
-        } else if (config === 'ports' || config === 'volumes' || config === 'environment') {
-            if (!obj[service][config]) {
-                if (config === 'environment') {
-                    obj[service][config] = {};
-                } else {
-                    obj[service][config] = [];
-                }
+                    result.value = inputs[0].value;
+                    result.pairValue = inputs[1].value;
+                    results.push(result);
+                });
+            }
+        });
+
+        // crear el objeto con la informacion de los inputs
+        results.forEach(result => {
+            if (!obj[service]) {
+                obj[service] = {};
             }
 
-            const pairKey = form.elements.namedItem(`${service}-${config}-pair-${formData.get(`${service}-${config}-index-${value}`)}`);
-
-            if (pairKey) {
-                if (config === 'environment') {
-                    obj[service][config][value] = pairKey.value;
-                } else {
-                    obj[service][config].push(`${value}:${pairKey.value}`);
+            if (result.config === 'ports' || result.config === 'volumes') {
+                if (!obj[service][result.config]) {
+                    obj[service][result.config] = [];
                 }
+                // si tiene varios puertos o volumenes, agregarlos al array con el formato local:remote y si solo tiene value o pairValue, agregarlo solo
+                let concatValues = result.value && result.pairValue ? `${result.value}:${result.pairValue}` : result.value || result.pairValue || null;
+                if (concatValues) obj[service][result.config].push(concatValues);
+            } else if (result.config === 'environment') {
+                if (!obj[service][result.config]) {
+                    obj[service][result.config] = {};
+                }
+                obj[service][result.config][result.value] = result.pairValue;
+            } else {
+                obj[service][result.config] = result.value;
             }
-        } else {
-            obj[service][config] = value;
-        }
-    }
+        });
+    });
 
     return obj;
 };
-
-const objectToYaml = () => {
-    const form = document.getElementById('docker-compose-form');
-    const dockerComposeObject = formToObject(form);
-    const dockerComposeYaml = jsyaml.dump(dockerComposeObject);
-
-    console.log(dockerComposeYaml);
-
-    // Código para descargar el archivo docker-compose.yaml
-   /*const blob = new Blob([dockerComposeYaml], { type: "text/yaml;charset=utf-8" });
-    const href = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = 'docker-compose.yaml';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);*/
-}
-
-const showYaml = () => {
-    const form = document.getElementById('docker-compose-form');
-    let dockerComposeObject = formToObject(form);
-    dockerComposeObject = { version: '3.9', services: dockerComposeObject };
-    const dockerComposeYaml = jsyaml.dump(dockerComposeObject);
-    const modal = document.getElementById('yamlModal');
-    modal.querySelector('.modal-body').innerHTML = `<pre>${dockerComposeYaml}</pre>`;
-}

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <title>Docker Compose Generator</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  
+
   <!-- BootStrap -->
   <link href="bootstrap530/css/bootstrap.min.css" rel="stylesheet">
   <link href="bootstrap530/font/bootstrap-icons.css" rel="stylesheet">
@@ -22,22 +21,23 @@
   <script src="js/main.js"></script>
   <script src="js/createForm.js"></script>
   <script src="js/casts.js"></script>
-  
 </head>
 
 <body>
-
   <div class="container">
     <h1 class="text-center text-primary py-3">DockerBach</h1>
+
     <div id="checkboxes" class="checkboxes row"></div>
+
     <nav class="tabs mt-4">
       <div class="d-flex ">
-
         <div id="tabList" class="nav nav-tabs col-10"></div>
         <div class="col-2" style="position: absolute; right: 0;">
           <div class="btn-group" role="group" aria-label="Basic example">
-            <button id="btnVer" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#yamlModal" onclick="showYaml()">Ver <i class="bi bi-eye"></i></button>
-            <button id="btnDescargar" class="btn btn-outline-primary">Descargar <i class="bi bi-download"></i></button>
+            <button id="btnVer" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#yamlModal"
+              onclick=showYaml()>Ver <i class="bi bi-eye"></i></button>
+            <button id="btnDescargar" class="btn btn-outline-primary" onclick=downloadYaml()>Descargar <i
+                class="bi bi-download"></i></button>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@
         <div class="tab-content" id="tabContent"></div>
       </form>
     </nav>
-    
+
     <div class="modal fade" id="yamlModal" tabindex="-1" aria-labelledby="yamlModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -54,17 +54,21 @@
             <h5 class="modal-title" id="yamlModalLabel">Docker Compose - YAML</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            Aquí va el texto que quieres mostrar.
-          </div>
+
+          <div class="modal-body"></div>
+
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" onclick=copyYaml()>Copiar <i
+                class="bi bi-clipboard-heart"></i></button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar <i class="bi bi-x"></i></button>
           </div>
         </div>
       </div>
     </div>
-    
-  </div>
-</body>
 
+  </div>
+
+  <!-- notificación que se muestra abajo a la derecha por encima de todo -->
+  <div id="notification" style="display: block;"></div>
+</body>
 </html>
