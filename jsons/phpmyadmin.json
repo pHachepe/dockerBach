@@ -1,10 +1,10 @@
 {
     "phpmyadmin": {
         "image": ["phpmyadmin:latest", "phpmyadmin:5-fpm-alpine", "phpmyadmin:5.2"],
-        "environment": [
+        "environment": {
             "PMA_HOST": "mysql",
             "MYSQL_ROOT_PASSWORD": "toor"
-        ],
+        },
         "ports": ["4283:80"]
     }
 }
