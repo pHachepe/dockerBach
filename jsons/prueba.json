@@ -1,0 +1,5 @@
+{
+    "prueba": {
+        "image": ["prueba:latest", "prueba:8.8.0", "prueba:7.17.9"]
+    }
+}
